@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script>
+class Lennuk {
+    constructor(x, y, g, haldus){
+        this.x = x;
+        this.y = y;
+        this.g = g;
+        this.haldus = haldus;
+        this.nurk = 0;     // kraadides
+        this.kiirus = 4;
+    }
+
+    joonista(){
+        this.g.save();
+        this.g.translate(this.x, this.y);
+        this.g.rotate(this.nurk * Math.PI / 180);
+
+        //aktiivne lennuki värvus roheline, ülejäänud mustad
+        if(this.haldus.lennukid[this.haldus.aktiivne] === this){
+            this.g.fillStyle = "green";
+        } else {
+            this.g.fillStyle = "black";
+        }
+
+        //lennuki kuju
+        this.g.beginPath();
+        this.g.moveTo(20, 0);     // nina
+        this.g.lineTo(-15, -8);
+        this.g.lineTo(-5, 0);
+        this.g.lineTo(-15, 8);
+        this.g.closePath();
+        this.g.fill();
+
+        this.g.restore();
+    }
+
+    edasi(){
+        this.x += this.kiirus * Math.cos(this.nurk * Math.PI / 180);
+        this.y += this.kiirus * Math.sin(this.nurk * Math.PI / 180);
+    }
+
+    pööraParemale(){
+        this.nurk += 10;
+    }
+
+    pööraVasakule(){
+        this.nurk -= 10;
+    }
+}
+
+class Lennuhaldus {
+    lennukid = [];
+    aktiivne = 0;
+
+    constructor(){
+        this.g = tahvel.getContext("2d");
+    }
+
+    lisaLennuk(x,y){
+        let uus = new Lennuk(x,y,this.g,this);
+        this.lennukid.push(uus);
+        this.joonista();
+    }
+
+    joonista(){
+        this.g.clearRect(0,0,800,500);
+        for(let l of this.lennukid){
+            l.joonista();
+        }
+    }
+
+    edasi(){
+        this.lennukid[this.aktiivne].edasi();
+        this.joonista();
+    }
+
+    paremale(){
+        this.lennukid[this.aktiivne].pööraParemale();
+        this.joonista();
+    }
+
+    vasakule(){
+        this.lennukid[this.aktiivne].pööraVasakule();
+        this.joonista();
+    }
+
+    vaheta(){
+        this.aktiivne = (this.aktiivne+1) % this.lennukid.length;
+        this.joonista();
+    }
+}
+
+let lh;
+
+function algus(){
+    lh = new Lennuhaldus();
+    lh.lisaLennuk(200,200);
+    lh.lisaLennuk(400,300);
+    lh.lisaLennuk(600,150);
+}
+
+function edasi(){ lh.edasi(); }
+function paremale(){ lh.paremale(); }
+function vasakule(){ lh.vasakule(); }
+function vaheta(){ lh.vaheta(); }
+
+</script>
+</head>
+
+<body onload="algus()">
+    <button onclick="edasi()">Edasi</button>
+    <button onclick="vasakule()">Vasakule</button>
+    <button onclick="paremale()">Paremale</button>
+    <button onclick="vaheta()">Vaheta lennukit</button><br><br>
+    <canvas id="tahvel" width="800" height="500"></canvas>
+</body>
+</html>
