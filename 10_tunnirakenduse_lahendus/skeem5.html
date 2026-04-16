@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Takisti</title>
+    <script src="skeem5.js"></script>
+    <script>
+        let r1, r2, sc1;
+        function startPage() {
+            r1 = new Resistor("R1", 250);
+            r2 = new Resistor("R2", 250);
+            r3 = new Resistor("R3", 700);
+            sc1 = new SeriesConnection("SC1");
+            sc1.addResistor(r1);
+            sc1.addResistor(r2);
+            sc2 = new SeriesConnection("SC2");
+            sc2.addResistor(sc1);
+            sc2.addResistor(r3);
+            sc2.setU(12);
+            sc2.draw(canvas1.getContext("2d"), 10, 50);
+        }
+    </script>
+    <meta charset="utf-8">
+</head>
+
+<body onload="startPage()">
+    <canvas id="canvas1" width="400" height="100"></canvas><br />
+</body>
+
+</html>
