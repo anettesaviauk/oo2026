@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Takisti</title>
+    <script src="takisti4.js"></script>
+    <script>
+        let r1, r2;
+        function startPage() {
+            r1 = new Resistor(110, canvas1.getContext("2d"), 50, 150, 50);
+            r2 = new Resistor(220, canvas1.getContext("2d"), 150, 250, 50); //lisan teise takisti teistsuguste andmetega
+            range1.value = r1.getR();
+            range2.value = r2.getR();
+            document.getElementById("p1").innerText = "r1.r = " + r1.getR() + " Ω";
+            document.getElementById("p2").innerText = "r2.r = " + r2.getR() + " Ω";
+        }
+    </script>
+</head>
+
+<body onload="startPage()">
+    <canvas id="canvas1" width="400" height="100"></canvas><br />
+    <p>Maandustakisti1</p>
+    <p id="p1"> r1.r</p>
+    <input type="range" id="range1" min="100" max="1000"
+        oninput="r1.setR(this.valueAsNumber); document.getElementById('p1').innerText = 'r1.r = ' + r1.getR()" />
+    <p>Maandustakisti2</p>
+    <p id="p2"> r2.r</p>
+    <input type="range" id="range2" min="100" max="1000"
+        oninput="r2.setR(this.valueAsNumber); document.getElementById('p2').innerText = 'r2.r = ' + r2.getR()" />
+</body>
+
+</html>
