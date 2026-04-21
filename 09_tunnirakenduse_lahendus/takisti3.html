@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Takisti</title>
+    <script src="takisti3.js"></script>
+    <script>
+        let r1, r2;
+        function startPage() {
+            r1 = new Resistor(4700, canvas1.getContext("2d"), 50, 150, 50); //4700mmäärasin algväärtuseks
+            r2 = new Resistor(4700, canvas1.getContext("2d"), 150, 250, 50); //lisasin teise takisti
+        }
+    </script>
+</head>
+
+<body onload="startPage()">
+    <canvas id="canvas1" width="400" height="100"></canvas><br />
+    <p>R1</p>
+    <input type="range" id="range1" min="110" max="10000" value="4700" onclick="r1.setR(this.valueAsNumber)" />
+    <p>R2</p>
+    <input type="range" id="range2" min="100" max="10000" value="4700" onclick="r2.setR(this.valueAsNumber)" />
+</body>
+
+</html>
