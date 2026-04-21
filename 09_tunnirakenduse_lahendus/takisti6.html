@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Takisti</title>
+    <script src="takisti6.js"></script>
+    <script>
+        // Jadaühendus
+        let r1, r2, r3, sc1;
+        function startPage() {
+            r1 = new Resistor(110);
+            r2 = new Resistor(220);
+            r3 = new Resistor(50);
+            sc1 = new SeriesCircuit(canvas1.getContext("2d"), 10, 50);
+            sc1.push(r1);
+            sc1.push(r2);
+            sc1.push(r3);
+            r4 = new Resistor(100);
+            r5 = new Resistor(150);
+            r6 = new Resistor(200);
+            sc2 = new SeriesCircuit(canvas1.getContext("2d"), 10, 150);
+            sc2.push(r4);
+            sc2.push(r5);
+            sc2.push(r6);
+
+        }
+    </script>
+</head>
+
+<body onload="startPage()">
+    <canvas id="canvas1" width="400" height="300"></canvas>
+</body>
+
+</html>
