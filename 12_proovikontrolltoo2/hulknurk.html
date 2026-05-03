@@ -1,0 +1,102 @@
+<!-- # Hulknurk
+
+# 1. Korrapärase hulknurgaga tegelevale klassile antakse keskpunkti koordinaadid,
+# tipu kaugus keskpunktist ning tippude arv. Käsuga saab küsida tippude koordinaadid ning
+# hulknurga pindala.
+# 2. Vastav hulknurk joonistatakse ekraanile.
+# 3. Kasutajal on slaider nurkade arvu määramiseks. Kuvatakse vastav hulknurk ja selle
+# arvuline pindala. Kõrvale joonistatakse tulp, mille kõrgus sõltub hulknurga pindalast. -->
+
+<!doctype html>
+<html>
+
+<body>
+
+    <canvas id="c" width="600" height="500" style="border:1px solid black;"></canvas>
+
+    <br>
+    Tippude arv:
+    <input type="range" min="3" max="20" value="5" id="slider">
+
+    <p id="text"></p>
+
+    <script>
+        class Hulknurk {
+            constructor(x0, y0, n, r) {
+                this.x0 = x0;
+                this.y0 = y0;
+                this.n = n;
+                this.r = r;
+            }
+
+            koordinaadid() {
+                let v = [];
+
+                for (let i = 0; i < this.n; i++) {
+                    let nurk = i * 6.28 / this.n;
+                    // let nurk =i * 2 * Math.PI / this.n;
+
+                    let x = this.x0 + Math.cos(nurk) * this.r;
+                    let y = this.y0 + Math.sin(nurk) * this.r;
+
+                    v.push([x, y]);
+                }
+
+                return v;
+            }
+
+            pindala() {
+                return 0.5 * this.n * this.r * this.r * Math.sin(2 * Math.PI / this.n);
+            }
+        }
+
+        const canvas = document.getElementById("c");
+        const ctx = canvas.getContext("2d");
+        const slider = document.getElementById("slider");
+        const text = document.getElementById("text");
+
+        function draw(n) {
+            ctx.clearRect(0, 0, 600, 500);
+
+            let h = new Hulknurk(200, 250, n, 100);
+
+            let pts = h.koordinaadid();
+
+
+            ctx.beginPath();
+            for (let i = 0; i < pts.length; i++) {
+                let [x, y] = pts[i];
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.stroke();
+
+
+            let A = h.pindala();
+            text.innerText = "Pindala: " + A.toFixed(2);
+
+
+            let maxA = new Hulknurk(0, 0, 20, 100).pindala();
+            let barH = (A / maxA) * 200;
+
+            ctx.fillStyle = "purple";
+            ctx.fillRect(450, 400 - barH, 50, barH);
+
+            ctx.strokeStyle = "black";
+            ctx.strokeRect(450, 200, 50, 200);
+
+            ctx.fillStyle = "black";
+            ctx.fillText("Pindala", 450, 420);
+        }
+
+        slider.oninput = function () {
+            draw(parseInt(this.value));
+        };
+
+        draw(5);
+    </script>
+
+</body>
+
+</html>
